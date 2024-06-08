@@ -1,15 +1,17 @@
+import 'package:app/core/routes/app_route_constant.dart';
 import 'package:app/core/theme/app_pallete.dart';
 import 'package:app/features/auth/presentation/pages/signup_page.dart';
 import 'package:app/features/auth/presentation/widgets/auth_field.dart';
 import 'package:app/features/auth/presentation/widgets/auth_gradient_button.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class LoginPage extends StatefulWidget {
   static route() => MaterialPageRoute(
         builder: (context) => const LoginPage(),
       );
 
-  const LoginPage({Key? key}) : super(key: key);
+  const LoginPage({super.key});
 
   @override
   State<LoginPage> createState() => _LoginPageState();
@@ -58,8 +60,11 @@ class _LoginPageState extends State<LoginPage> {
                 isObsecureText: true,
               ),
               const SizedBox(height: 20),
-              const AuthGradientButton(
+              AuthGradientButton(
                 buttonText: 'Sign In',
+                onPressed: () {
+                  context.goNamed(AppRouteConstants.homeRouteName);
+                },
               ),
               const SizedBox(height: 20),
               GestureDetector(

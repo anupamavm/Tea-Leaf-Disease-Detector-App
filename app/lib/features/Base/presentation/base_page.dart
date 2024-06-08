@@ -1,9 +1,9 @@
 import 'package:app/core/theme/app_pallete.dart';
-import 'settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
-import 'scan_screen.dart';
-import 'map_screen.dart';
+import 'settings_screen.dart';
+import '../../disease-profiles/presentation/scan_screen.dart';
+import '../../distribution-profile/presentation/map_screen.dart';
 
 class BasePage extends StatefulWidget {
   const BasePage({super.key});
@@ -34,7 +34,7 @@ class _BasePageState extends State<BasePage> {
           });
         },
         children: const [
-          HomeScreen(),
+          // HomeScreen(),
           ScanScreen(),
           MapScreen(),
           SettingsScreen(),

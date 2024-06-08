@@ -67,8 +67,11 @@ class _SignUpPageState extends State<SignUpPage> {
                 isObsecureText: true,
               ),
               const SizedBox(height: 20),
-              const AuthGradientButton(
+              AuthGradientButton(
                 buttonText: 'Sign Up',
+                onPressed: () {
+                  Navigator.pushReplacementNamed(context, '/home');
+                },
               ),
               const SizedBox(height: 20),
               GestureDetector(
