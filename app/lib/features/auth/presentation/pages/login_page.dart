@@ -1,4 +1,3 @@
-import 'package:app/core/routes/app_route_constant.dart';
 import 'package:app/core/theme/app_pallete.dart';
 import 'package:app/features/auth/presentation/pages/signup_page.dart';
 import 'package:app/features/auth/presentation/widgets/auth_field.dart';
@@ -63,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
               AuthGradientButton(
                 buttonText: 'Sign In',
                 onPressed: () {
-                  context.goNamed(AppRouteConstants.homeRouteName);
+                  GoRouter.of(context).go('/');
                 },
               ),
               const SizedBox(height: 20),

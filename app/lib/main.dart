@@ -1,9 +1,9 @@
+import 'package:app/features/auth/presentation/pages/login_page.dart';
+import 'package:app/features/home/presentation/home_screen.dart';
 import 'package:app/screens/all_products_screen.dart';
-import 'package:app/screens/home_screen.dart';
 import 'package:app/screens/profile_screen.dart';
 import 'package:app/screens/settings_screen.dart';
-import 'package:app/screens/loading_screen.dart'; // Add this import
-import 'package:app/screens/login_screen.dart'; // Add this import
+import 'package:app/core/loading/loading_screen.dart'; // Add this import
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -27,7 +27,7 @@ final GoRouter _router = GoRouter(
     ),
     GoRoute(
       path: '/login',
-      pageBuilder: (context, state) => NoTransitionPage(child: LoginScreen()),
+      pageBuilder: (context, state) => NoTransitionPage(child: LoginPage()),
     ),
     ShellRoute(
       navigatorKey: _rootNavigatorKey,
