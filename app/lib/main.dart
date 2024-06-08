@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: "Blog App",
+      title: "Tea Leaf",
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightModeTheme,
       // home: AnimatedSplashScreen(

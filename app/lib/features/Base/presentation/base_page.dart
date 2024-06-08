@@ -1,5 +1,5 @@
 import 'package:app/core/theme/app_pallete.dart';
-import 'package:app/features/Base/presentation/settings_scree.dart';
+import 'settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'home_screen.dart';
 import 'scan_screen.dart';
@@ -55,12 +55,12 @@ class _BasePageState extends State<BasePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.map),
             label: 'Map',
-            backgroundColor: Color.fromARGB(255, 39, 176, 137),
+            backgroundColor: AppPallete.mainGreen,
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.settings),
             label: 'Settings',
-            backgroundColor: Color.fromARGB(255, 74, 117, 43),
+            backgroundColor: AppPallete.mainGreen,
           ),
         ],
         currentIndex: _selectedIndex,
