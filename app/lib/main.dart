@@ -1,9 +1,15 @@
+import 'package:app/core/theme/app_pallete.dart';
 import 'package:app/features/auth/presentation/pages/login_page.dart';
 import 'package:app/features/home/presentation/home_screen.dart';
-import 'package:app/screens/all_products_screen.dart';
-import 'package:app/screens/profile_screen.dart';
-import 'package:app/screens/settings_screen.dart';
+
+import 'package:app/features/info/data/disease_data.dart' as diseases;
+
+import 'package:app/features/map/presentation/map_screen.dart';
+import 'package:app/features/scan/presentation/scan_screen.dart';
+
+import 'package:app/features/settings/presentation/settings_screen.dart';
 import 'package:app/core/loading/loading_screen.dart'; // Add this import
+import 'package:app/features/info/presentation/all_diseases_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -41,9 +47,13 @@ final GoRouter _router = GoRouter(
               NoTransitionPage(child: HomeScreen()),
         ),
         GoRoute(
-          path: '/profile',
+          path: '/scan',
           pageBuilder: (context, state) =>
-              NoTransitionPage(child: ProfileScreen()),
+              NoTransitionPage(child: ScanScreen()),
+        ),
+        GoRoute(
+          path: '/map',
+          pageBuilder: (context, state) => NoTransitionPage(child: MapScreen()),
         ),
         GoRoute(
           path: '/settings',
@@ -51,9 +61,9 @@ final GoRouter _router = GoRouter(
               NoTransitionPage(child: SettingsScreen()),
         ),
         GoRoute(
-          path: '/all-products',
+          path: '/all_products',
           pageBuilder: (context, state) =>
-              NoTransitionPage(child: AllProductsScreen()),
+              NoTransitionPage(child: AllDiseasesScreen()),
         ),
       ],
     ),
@@ -72,7 +82,7 @@ class ScaffoldWithNavBar extends StatelessWidget {
     return Scaffold(
       body: child,
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: Colors.blueGrey,
+        backgroundColor: const Color.fromARGB(255, 16, 63, 86),
         currentIndex: _calculateSelectedIndex(context),
         onTap: (index) {
           switch (index) {
@@ -80,23 +90,37 @@ class ScaffoldWithNavBar extends StatelessWidget {
               context.go('/');
               break;
             case 1:
-              context.go('/profile');
+              context.go('/scan');
               break;
             case 2:
-              context.go('/settings');
+              context.go('/map');
               break;
             case 3:
-              context.go('/all-products');
+              context.go('/settings');
               break;
           }
         },
         items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
           BottomNavigationBarItem(
-              icon: Icon(Icons.settings), label: 'Settings'),
+            icon: Icon(Icons.home),
+            label: 'Home',
+            backgroundColor: AppPallete.mainGreen,
+          ),
           BottomNavigationBarItem(
-              icon: Icon(Icons.list), label: 'All Products'),
+            icon: Icon(Icons.scanner),
+            label: 'Scan',
+            backgroundColor: AppPallete.mainGreen,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.map),
+            label: 'Map',
+            backgroundColor: AppPallete.mainGreen,
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.settings),
+            label: 'Settings',
+            backgroundColor: AppPallete.mainGreen,
+          ),
         ],
       ),
     );
@@ -104,13 +128,13 @@ class ScaffoldWithNavBar extends StatelessWidget {
 
   int _calculateSelectedIndex(BuildContext context) {
     final String location = GoRouterState.of(context).location;
-    if (location == '/profile') {
+    if (location == '/scan') {
       return 1;
     }
-    if (location == '/settings') {
+    if (location == '/map') {
       return 2;
     }
-    if (location == '/all-products') {
+    if (location == '/settings') {
       return 3;
     }
     return 0;

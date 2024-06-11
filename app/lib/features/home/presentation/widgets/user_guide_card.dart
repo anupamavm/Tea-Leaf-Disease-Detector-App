@@ -10,7 +10,7 @@ class UserGuideCard extends StatelessWidget {
       padding: EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         color: Colors.blueAccent,
-        borderRadius: BorderRadius.circular(8.0),
+        borderRadius: BorderRadius.circular(15),
       ),
       child: Center(
         child: Text(
