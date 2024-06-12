@@ -1,4 +1,6 @@
+import 'package:app/core/theme/app_pallete.dart';
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ScanScreen extends StatefulWidget {
   @override
@@ -18,59 +20,92 @@ class _ScanScreenState extends State<ScanScreen> {
     });
   }
 
+  // Function to handle scanning
+  void _scanImage() {
+    // TODO: Implement scan functionality
+    // Perform scan operations here
+    // For now, let's reset _imageCaptured to false
+    setState(() {
+      _imageCaptured = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    double cameraViewWidth = 400.0; // Customize the width of the camera view
+    double cameraViewHeight = 450.0; // Customize the height of the camera view
+
     return Scaffold(
-      appBar: AppBar(
-        title: Text('Scan Screen'),
-      ),
-      body: Stack(
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          // Camera view
-          Center(
-            child: _imageCaptured
-                ? Image.asset(
-                    'assets/captured_image.jpg') // Display captured image
-                : Text('Camera View'), // Placeholder for camera view
-          ),
-          // Buttons
-          Positioned(
-            left: 16,
-            bottom: 16,
-            child: IconButton(
-              icon: Icon(Icons.info),
-              onPressed: () {
-                // Navigate to user guides screen
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => UserGuidesScreen()),
-                );
-              },
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                IconButton(
+                  icon: Icon(Icons.info, size: 36),
+                  onPressed: () {
+                    // Navigate to user guides screen
+                    GoRouter.of(context).go('/user_guide');
+                  },
+                ),
+                Spacer(), // Spacer to push the title to the center
+                Text(
+                  'Scan for diseases',
+                  style: TextStyle(
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                Spacer(flex: 2), // Adjust spacer to balance the layout
+              ],
             ),
           ),
-          Positioned(
-            right: 16,
-            bottom: 16,
-            child: ElevatedButton(
-              onPressed: _imageCaptured ? null : _captureImage,
-              child: Text(_imageCaptured ? 'Scan' : 'Capture'),
+          Center(
+            child: Container(
+              width: cameraViewWidth,
+              height: cameraViewHeight,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15.0),
+                border: Border.all(
+                  color: Colors.black, // Set the border color
+                  width: 2.0, // Set the border width
+                ),
+              ),
+              child: _imageCaptured
+                  ? Image.asset(
+                      'assets/captured_image.jpg', // Display captured image
+                      width: cameraViewWidth,
+                      height: cameraViewHeight,
+                      fit: BoxFit.cover,
+                    )
+                  : Center(
+                      child: Text('Camera View'), // Placeholder for camera view
+                    ),
+            ),
+          ),
+          Spacer(), // Push buttons to the bottom
+          Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Center(
+              child: SizedBox(
+                width: 320, // Set the desired width of the button
+                height: 50, // Set the desired height of the button
+                child: ElevatedButton(
+                  onPressed: _imageCaptured ? _scanImage : _captureImage,
+                  style: ElevatedButton.styleFrom(
+                    foregroundColor: AppPallete.whiteColor,
+                    backgroundColor:
+                        AppPallete.mainGreen, // Set the custom button color
+                  ),
+                  child: Text(_imageCaptured ? 'Scan' : 'Capture'),
+                ),
+              ),
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class UserGuidesScreen extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('User Guides'),
-      ),
-      body: Center(
-        child: Text('User Guides Screen'),
       ),
     );
   }

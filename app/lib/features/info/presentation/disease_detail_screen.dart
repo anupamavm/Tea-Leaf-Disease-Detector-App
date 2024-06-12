@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_markdown/flutter_markdown.dart'; // Import flutter_markdown package
+import 'package:go_router/go_router.dart'; // Import GoRouter
 import '../data/disease_data.dart'; // Adjust import based on your file structure
 
 class DiseaseDetailScreen extends StatelessWidget {
@@ -13,6 +14,13 @@ class DiseaseDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(disease.title),
+        leading: IconButton(
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            context
+                .go('/all_diseases'); // Navigate back to the AllDiseasesScreen
+          },
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),

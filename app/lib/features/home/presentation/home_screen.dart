@@ -3,7 +3,6 @@ import 'package:app/features/home/presentation/widgets/disease_card.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../info/data/disease_data.dart';
-import '../../info/presentation/disease_detail_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -22,8 +21,6 @@ class HomeScreen extends StatelessWidget {
                 borderRadius: BorderRadius.only(
                   bottomLeft: Radius.circular(25),
                   bottomRight: Radius.circular(25),
-                  topLeft: Radius.zero,
-                  topRight: Radius.zero,
                 ),
               ),
               child: const Row(
@@ -51,7 +48,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                   TextButton(
                     onPressed: () {
-                      context.go('/all_products');
+                      context.go('/all_diseases');
                     },
                     child: Text(
                       "See All",
@@ -68,18 +65,12 @@ class HomeScreen extends StatelessWidget {
               height: 250,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
-                itemCount: diseases.length,
+                itemCount: diseases.length > 5 ? 5 : diseases.length,
                 itemBuilder: (context, index) {
                   final disease = diseases[index];
                   return GestureDetector(
                     onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              DiseaseDetailScreen(disease: disease),
-                        ),
-                      );
+                      context.go('/disease_detail', extra: disease);
                     },
                     child: DiseaseCard(
                       title: disease.title,

@@ -4,6 +4,7 @@ class AllDiseaseCard extends StatelessWidget {
   final String title;
   final String tagline;
   final String description;
+  final String subdesc;
   final String imageUrl;
 
   const AllDiseaseCard({
@@ -11,6 +12,7 @@ class AllDiseaseCard extends StatelessWidget {
     required this.title,
     required this.tagline,
     required this.description,
+    required this.subdesc,
     required this.imageUrl,
   }) : super(key: key);
 
@@ -59,7 +61,7 @@ class AllDiseaseCard extends StatelessWidget {
                   ),
                   SizedBox(height: 8),
                   Text(
-                    description,
+                    subdesc,
                     maxLines: 3, // Limit to three lines of description
                     overflow: TextOverflow.ellipsis,
                   ),
