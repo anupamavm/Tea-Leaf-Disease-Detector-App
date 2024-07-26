@@ -20,7 +20,7 @@ class _ScanScreenState extends State<ScanScreen> {
     });
   }
 
-  // Function to handle scanning
+  // Function to handle scan
   void _scanImage() {
     // TODO: Implement scan functionality
     // Perform scan operations here

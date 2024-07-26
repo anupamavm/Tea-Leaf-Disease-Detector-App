@@ -9,7 +9,6 @@ class AppTheme {
         ),
         borderRadius: BorderRadius.circular(10),
       );
-
   static final lightModeTheme = ThemeData.light().copyWith(
     scaffoldBackgroundColor: AppPallete.backgroundColor,
     appBarTheme: const AppBarTheme(
