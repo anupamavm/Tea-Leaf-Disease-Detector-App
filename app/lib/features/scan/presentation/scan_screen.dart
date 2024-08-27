@@ -1,6 +1,9 @@
-import 'package:app/core/theme/app_pallete.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:camera/camera.dart';
+import './widgets/camera_view.dart';
+import './widgets/capture_scan_button.dart';
+import 'package:app/core/theme/app_pallete.dart';
 
 class ScanScreen extends StatefulWidget {
   @override
@@ -8,26 +11,87 @@ class ScanScreen extends StatefulWidget {
 }
 
 class _ScanScreenState extends State<ScanScreen> {
-  // Variable to track whether an image has been captured
+  CameraController? _cameraController;
+  XFile? _capturedImage;
   bool _imageCaptured = false;
 
-  // Function to handle capturing an image
-  void _captureImage() {
-    // TODO: Implement image capture functionality
-    // Set _imageCaptured to true after capturing the image
-    setState(() {
-      _imageCaptured = true;
-    });
+  @override
+  void initState() {
+    super.initState();
+    _initializeCamera(); // Initialize the camera when the screen is first created
   }
 
-  // Function to handle scan
-  void _scanImage() {
-    // TODO: Implement scan functionality
-    // Perform scan operations here
-    // For now, let's reset _imageCaptured to false
-    setState(() {
-      _imageCaptured = false;
-    });
+  Future<void> _initializeCamera() async {
+    try {
+      final cameras =
+          await availableCameras(); // Get available cameras on the device
+      final firstCamera = cameras.first; // Choose the first available camera
+
+      _cameraController = CameraController(
+        firstCamera,
+        ResolutionPreset.high, // Set the camera resolution
+      );
+
+      await _cameraController?.initialize();
+      setState(() {}); // Refresh the UI after the camera is initialized
+    } catch (e) {
+      print('Error initializing camera: $e');
+    }
+  }
+
+  @override
+  void dispose() {
+    _cameraController
+        ?.dispose(); // Dispose of the camera controller to release resources
+    super.dispose();
+  }
+
+  Future<void> _captureImage() async {
+    try {
+      if (_cameraController != null && _cameraController!.value.isInitialized) {
+        final image = await _cameraController!.takePicture();
+
+        setState(() {
+          _capturedImage = image;
+          _imageCaptured = true; // Mark that an image has been captured
+        });
+      }
+    } catch (e) {
+      print('Error capturing image: $e');
+    }
+  }
+
+  Future<void> _scanImage() async {
+    try {
+      if (_capturedImage != null) {
+        // TODO: Implement your scanning logic here
+
+        await Future.delayed(Duration(seconds: 2));
+
+        setState(() {
+          _imageCaptured = false;
+          _capturedImage = null; // Clear the captured image
+        });
+
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: Text('Scan Complete'),
+            content: Text('The disease scan is complete.'),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          ),
+        );
+      }
+    } catch (e) {
+      print('Error scanning image: $e');
+    }
   }
 
   @override
@@ -47,7 +111,6 @@ class _ScanScreenState extends State<ScanScreen> {
                 IconButton(
                   icon: Icon(Icons.info, size: 36),
                   onPressed: () {
-                    // Navigate to user guides screen
                     GoRouter.of(context).go('/user_guide');
                   },
                 ),
@@ -64,44 +127,22 @@ class _ScanScreenState extends State<ScanScreen> {
             ),
           ),
           Center(
-            child: Container(
+            child: CameraView(
+              cameraController: _cameraController,
+              capturedImage: _capturedImage,
               width: cameraViewWidth,
               height: cameraViewHeight,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(15.0),
-                border: Border.all(
-                  color: Colors.black, // Set the border color
-                  width: 2.0, // Set the border width
-                ),
-              ),
-              child: _imageCaptured
-                  ? Image.asset(
-                      'assets/captured_image.jpg', // Display captured image
-                      width: cameraViewWidth,
-                      height: cameraViewHeight,
-                      fit: BoxFit.cover,
-                    )
-                  : Center(
-                      child: Text('Camera View'), // Placeholder for camera view
-                    ),
             ),
           ),
-          Spacer(), // Push buttons to the bottom
+          Spacer(),
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Center(
-              child: SizedBox(
-                width: 320, // Set the desired width of the button
-                height: 50, // Set the desired height of the button
-                child: ElevatedButton(
-                  onPressed: _imageCaptured ? _scanImage : _captureImage,
-                  style: ElevatedButton.styleFrom(
-                    foregroundColor: AppPallete.whiteColor,
-                    backgroundColor:
-                        AppPallete.mainGreen, // Set the custom button color
-                  ),
-                  child: Text(_imageCaptured ? 'Scan' : 'Capture'),
-                ),
+              child: CaptureScanButton(
+                imageCaptured: _imageCaptured,
+                onCapturePressed: _captureImage,
+                onScanPressed: _scanImage,
+                buttonColor: AppPallete.mainGreen,
               ),
             ),
           ),
