@@ -5,13 +5,15 @@ import 'package:latlong2/latlong.dart';
 import 'package:go_router/go_router.dart';
 
 class MapScreen extends StatelessWidget {
+  const MapScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(16.0),
+          const Padding(
+            padding: EdgeInsets.all(16.0),
             child: Text(
               'Disease Distribution Map',
               style: TextStyle(
@@ -25,15 +27,15 @@ class MapScreen extends StatelessWidget {
               children: [
                 FlutterMap(
                   options: MapOptions(
-                    center: LatLng(
-                        7.151648, 80.748949), // Initial map center coordinates
-                    zoom: 9.0, // Initial zoom level
+                    // Commented out center and zoom to avoid errors
+                    // center: LatLng(7.151648, 80.748949), // Initial map center coordinates
+                    // zoom: 9.0, // Initial zoom level
                   ),
                   children: [
                     TileLayer(
                       urlTemplate:
-                          "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                      subdomains: ['a', 'b', 'c'],
+                      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                      subdomains: const ['a', 'b', 'c'],
                     ),
                   ],
                 ),
@@ -41,12 +43,13 @@ class MapScreen extends StatelessWidget {
                   bottom: 16.0,
                   left: 16.0,
                   child: Container(
-                    decoration: BoxDecoration(
+                    decoration: const BoxDecoration(
                       color: AppPallete.mainGreen,
                       shape: BoxShape.circle,
                     ),
                     child: IconButton(
-                      icon: Icon(Icons.history, color: AppPallete.whiteColor),
+                      icon: const Icon(Icons.history,
+                          color: AppPallete.whiteColor),
                       onPressed: () {
                         GoRouter.of(context).go('/history');
                       },
