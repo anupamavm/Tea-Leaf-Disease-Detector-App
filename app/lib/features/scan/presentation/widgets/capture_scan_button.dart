@@ -9,14 +9,14 @@ class CaptureScanButton extends StatelessWidget {
   final double height;
 
   const CaptureScanButton({
-    Key? key,
+    super.key,
     required this.imageCaptured,
     required this.onCapturePressed,
     required this.onScanPressed,
     required this.buttonColor,
     this.width = 320, // Default button width
     this.height = 50, // Default button height
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {

@@ -8,18 +8,18 @@ class DiseaseCard extends StatelessWidget {
   final double width;
 
   const DiseaseCard({
-    Key? key,
+    super.key,
     required this.title,
     required this.tagline,
     required this.imageUrl,
     this.height = 200, // Default height if not specified
     this.width = 150, // Default width if not specified
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(8),
+      margin: const EdgeInsets.all(8),
       child: Container(
         height: height, // Set the height here
         width: width, // Set the width here
@@ -36,17 +36,17 @@ class DiseaseCard extends StatelessWidget {
                 fit: BoxFit.cover,
               ),
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Text(
               title,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Flexible(
               child: Text(
                 tagline,

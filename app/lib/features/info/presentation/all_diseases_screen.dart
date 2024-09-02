@@ -4,11 +4,13 @@ import 'widgets/all_disease_card.dart';
 import 'package:go_router/go_router.dart';
 
 class AllDiseasesScreen extends StatelessWidget {
+  const AllDiseasesScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('All Diseases'),
+        title: const Text('All Diseases'),
       ),
       body: ListView.builder(
         itemCount: diseases.length,

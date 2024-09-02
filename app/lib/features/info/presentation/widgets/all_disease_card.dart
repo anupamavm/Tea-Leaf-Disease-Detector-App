@@ -8,18 +8,18 @@ class AllDiseaseCard extends StatelessWidget {
   final String imageUrl;
 
   const AllDiseaseCard({
-    Key? key,
+    super.key,
     required this.title,
     required this.tagline,
     required this.description,
     required this.subdesc,
     required this.imageUrl,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.all(8),
+      margin: const EdgeInsets.all(8),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -33,7 +33,7 @@ class AllDiseaseCard extends StatelessWidget {
               fit: BoxFit.cover,
             ),
           ),
-          SizedBox(width: 8), // Add spacing between the columns
+          const SizedBox(width: 8), // Add spacing between the columns
           // Right container containing title, tagline, and description
           Expanded(
             child: Container(
@@ -43,23 +43,23 @@ class AllDiseaseCard extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text(
                     tagline,
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontWeight: FontWeight.bold,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  SizedBox(height: 8),
+                  const SizedBox(height: 8),
                   Text(
                     subdesc,
                     maxLines: 3, // Limit to three lines of description

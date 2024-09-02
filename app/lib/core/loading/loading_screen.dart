@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 class LoadingScreen extends StatefulWidget {
+  const LoadingScreen({super.key});
+
   @override
   _LoadingScreenState createState() => _LoadingScreenState();
 }
@@ -27,7 +29,7 @@ class _LoadingScreenState extends State<LoadingScreen>
       curve: Curves.easeInOut,
     );
 
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 3), () {
       GoRouter.of(context).go('/login');
     });
   }
@@ -46,7 +48,7 @@ class _LoadingScreenState extends State<LoadingScreen>
       body: Center(
         child: FadeTransition(
           opacity: _animation,
-          child: Icon(
+          child: const Icon(
             Icons.scanner,
             size: 100,
             color: AppPallete.whiteColor,

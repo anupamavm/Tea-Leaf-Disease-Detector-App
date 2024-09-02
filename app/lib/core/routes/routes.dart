@@ -22,11 +22,11 @@ final GoRouter router = GoRouter(
   routes: [
     GoRoute(
       path: '/loading',
-      pageBuilder: (context, state) => NoTransitionPage(child: LoadingScreen()),
+      pageBuilder: (context, state) => const NoTransitionPage(child: LoadingScreen()),
     ),
     GoRoute(
       path: '/login',
-      pageBuilder: (context, state) => NoTransitionPage(child: LoginPage()),
+      pageBuilder: (context, state) => const NoTransitionPage(child: LoginPage()),
     ),
     ShellRoute(
       navigatorKey: _rootNavigatorKey,
@@ -37,36 +37,36 @@ final GoRouter router = GoRouter(
         GoRoute(
           path: '/',
           pageBuilder: (context, state) =>
-              NoTransitionPage(child: HomeScreen()),
+              const NoTransitionPage(child: HomeScreen()),
         ),
         GoRoute(
           path: '/scan',
           pageBuilder: (context, state) =>
-              NoTransitionPage(child: ScanScreen()),
+              const NoTransitionPage(child: ScanScreen()),
         ),
         GoRoute(
           path: '/map',
-          pageBuilder: (context, state) => NoTransitionPage(child: MapScreen()),
+          pageBuilder: (context, state) => const NoTransitionPage(child: MapScreen()),
         ),
         GoRoute(
           path: '/settings',
           pageBuilder: (context, state) =>
-              NoTransitionPage(child: SettingsScreen()),
+              const NoTransitionPage(child: SettingsScreen()),
         ),
         GoRoute(
           path: '/all_diseases',
           pageBuilder: (context, state) =>
-              NoTransitionPage(child: AllDiseasesScreen()),
+              const NoTransitionPage(child: AllDiseasesScreen()),
         ),
         GoRoute(
           path: '/user_guide',
           pageBuilder: (context, state) =>
-              NoTransitionPage(child: UserGuidesScreen()),
+              const NoTransitionPage(child: UserGuidesScreen()),
         ),
         GoRoute(
           path: '/history',
           pageBuilder: (context, state) =>
-              NoTransitionPage(child: HistoryScreen()),
+              const NoTransitionPage(child: HistoryScreen()),
         ),
         GoRoute(
           path: '/disease_detail',
@@ -85,7 +85,7 @@ final GoRouter router = GoRouter(
 class ScaffoldWithNavBar extends StatelessWidget {
   final Widget child;
 
-  const ScaffoldWithNavBar({required this.child});
+  const ScaffoldWithNavBar({super.key, required this.child});
 
   @override
   Widget build(BuildContext context) {

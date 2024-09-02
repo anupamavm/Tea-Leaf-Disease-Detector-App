@@ -3,19 +3,21 @@ import 'package:flutter_markdown/flutter_markdown.dart';
 import 'package:go_router/go_router.dart'; // Import GoRouter
 
 class UserGuidesScreen extends StatelessWidget {
+  const UserGuidesScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('User Guides'),
+        title: const Text('User Guides'),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             context.go('/scan');
           },
         ),
       ),
-      body: Markdown(
+      body: const Markdown(
         data: '''
 ## User Guides
 

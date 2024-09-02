@@ -39,7 +39,7 @@ class HomeScreen extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
+                  const Text(
                     "About Diseases",
                     style: TextStyle(
                       fontSize: 18,
@@ -50,7 +50,7 @@ class HomeScreen extends StatelessWidget {
                     onPressed: () {
                       context.go('/all_diseases');
                     },
-                    child: Text(
+                    child: const Text(
                       "See All",
                       style: TextStyle(
                         fontSize: 16,

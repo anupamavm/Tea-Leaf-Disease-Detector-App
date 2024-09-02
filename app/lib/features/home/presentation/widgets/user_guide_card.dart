@@ -6,13 +6,13 @@ class UserGuideCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.all(20),
-      padding: EdgeInsets.all(16.0),
+      margin: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(16.0),
       decoration: BoxDecoration(
         color: Colors.blueAccent,
         borderRadius: BorderRadius.circular(15),
       ),
-      child: Center(
+      child: const Center(
         child: Text(
           'Third Row Component',
           style: TextStyle(color: Colors.white, fontSize: 16),

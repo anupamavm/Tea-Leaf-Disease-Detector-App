@@ -6,8 +6,7 @@ import '../data/disease_data.dart'; // Adjust import based on your file structur
 class DiseaseDetailScreen extends StatelessWidget {
   final Disease disease;
 
-  const DiseaseDetailScreen({Key? key, required this.disease})
-      : super(key: key);
+  const DiseaseDetailScreen({super.key, required this.disease});
 
   @override
   Widget build(BuildContext context) {
@@ -15,7 +14,7 @@ class DiseaseDetailScreen extends StatelessWidget {
       appBar: AppBar(
         title: Text(disease.title),
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: const Icon(Icons.arrow_back),
           onPressed: () {
             context
                 .go('/all_diseases'); // Navigate back to the AllDiseasesScreen
@@ -39,7 +38,7 @@ class DiseaseDetailScreen extends StatelessWidget {
             const SizedBox(height: 4),
             Text(
               disease.title,
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 2),
 

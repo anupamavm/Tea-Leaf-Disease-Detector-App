@@ -9,12 +9,12 @@ class CameraView extends StatelessWidget {
   final double height;
 
   const CameraView({
-    Key? key,
+    super.key,
     required this.cameraController,
     required this.capturedImage,
     required this.width,
     required this.height,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +37,7 @@ class CameraView extends StatelessWidget {
             )
           : (cameraController != null && cameraController!.value.isInitialized)
               ? CameraPreview(cameraController!) // Display live camera feed
-              : Center(
+              : const Center(
                   child:
                       CircularProgressIndicator(), // Show loading indicator while the camera is initializing
                 ),

@@ -3,14 +3,13 @@ import 'package:app/features/auth/presentation/pages/login_page.dart';
 import 'package:app/features/auth/presentation/widgets/auth_field.dart';
 import 'package:app/features/auth/presentation/widgets/auth_gradient_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
 class SignUpPage extends StatefulWidget {
   static route() => MaterialPageRoute(
         builder: (context) => const SignUpPage(),
       );
 
-  const SignUpPage({Key? key}) : super(key: key);
+  const SignUpPage({super.key});
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
