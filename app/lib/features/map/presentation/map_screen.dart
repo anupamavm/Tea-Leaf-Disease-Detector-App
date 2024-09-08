@@ -1,11 +1,40 @@
 import 'package:app/core/theme/app_pallete.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:go_router/go_router.dart';
 
-class MapScreen extends StatelessWidget {
+class MapScreen extends StatefulWidget {
   const MapScreen({super.key});
+
+  @override
+  _MapScreenState createState() => _MapScreenState();
+}
+
+class _MapScreenState extends State<MapScreen> {
+  GoogleMapController? _mapController;
+
+  // Set initial position to a location
+  final LatLng _initialPosition = LatLng(7.151648, 80.748949); // Adjust to your initial coordinates
+
+  // Define a set of markers
+  final Set<Marker> _markers = {};
+
+  @override
+  void initState() {
+    super.initState();
+
+    // Add a marker at the initial position
+    _markers.add(
+      Marker(
+        markerId: MarkerId('initial_position'),
+        position: _initialPosition,
+        infoWindow: InfoWindow(
+          title: 'Initial Position',
+          snippet: 'This is where the map is initially centered.',
+        ),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -25,19 +54,19 @@ class MapScreen extends StatelessWidget {
           Expanded(
             child: Stack(
               children: [
-                FlutterMap(
-                  options: MapOptions(
-                    // Commented out center and zoom to avoid errors
-                    // center: LatLng(7.151648, 80.748949), // Initial map center coordinates
-                    // zoom: 9.0, // Initial zoom level
+                GoogleMap(
+                  initialCameraPosition: CameraPosition(
+                    target: _initialPosition,
+                    zoom: 9.0,
                   ),
-                  children: [
-                    TileLayer(
-                      urlTemplate:
-                      "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-                      subdomains: const ['a', 'b', 'c'],
-                    ),
-                  ],
+                  onMapCreated: (GoogleMapController controller) {
+                    _mapController = controller;
+                  },
+                  mapType: MapType.normal,
+                  myLocationEnabled: true,
+                  myLocationButtonEnabled: true,
+                  zoomControlsEnabled: false,
+                  markers: _markers, // Add the markers to the map
                 ),
                 Positioned(
                   bottom: 16.0,
