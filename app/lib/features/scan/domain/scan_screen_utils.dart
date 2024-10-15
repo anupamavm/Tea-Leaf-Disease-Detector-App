@@ -1,4 +1,4 @@
-import 'package:app/features/scan/presentation/hugging_face_service.dart';
+import 'package:app/features/scan/data/hugging_face_service.dart';
 import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:connectivity_plus/connectivity_plus.dart';
