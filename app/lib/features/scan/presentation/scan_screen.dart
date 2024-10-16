@@ -4,7 +4,10 @@ import 'package:camera/camera.dart';
 import './widgets/camera_view.dart';
 import './widgets/capture_scan_button.dart';
 import 'package:app/core/theme/app_pallete.dart';
-import '../domain/scan_screen_utils.dart'; // Import the utility functions
+
+// Import the newly split utility files
+import '../domain/camera_utils.dart'; // Camera-related utilities
+import '../domain/scan_utils.dart'; // Scan-related utilities
 
 class ScanScreen extends StatefulWidget {
   const ScanScreen({super.key});

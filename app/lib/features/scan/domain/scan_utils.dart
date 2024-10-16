@@ -10,7 +10,8 @@ Future<void> scanImage(BuildContext context, XFile? capturedImage) async {
   try {
     if (capturedImage != null) {
       // Check internet connection
-      bool isConnected = await hasInternetConnection();
+      // bool isConnected = await hasInternetConnection();
+      bool isConnected = false;
 
       if (!isConnected) {
         // Show a warning about using the local model
