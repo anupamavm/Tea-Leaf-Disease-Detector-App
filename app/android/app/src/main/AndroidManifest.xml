@@ -2,6 +2,9 @@
     
     <!-- Add your permissions here -->
     <uses-permission android:name="android.permission.CAMERA"/>
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
+
 
     <application
         android:label="app"
@@ -37,6 +40,9 @@
         <meta-data
             android:name="flutterEmbedding"
             android:value="2" />
+            <meta-data android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyD-DpF_9uhqZSWK78tif6oaDSGimaQAKAI"/>
+
     </application>
 
     <!-- Required to query activities that can process text, see:

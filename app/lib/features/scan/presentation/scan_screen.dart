@@ -158,10 +158,12 @@
 
 
 
+import 'dart:convert'; // For encoding JSON data
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:camera/camera.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:http/http.dart' as http; // Import the http package
 import './widgets/camera_view.dart';
 import './widgets/capture_scan_button.dart';
 import 'package:app/core/theme/app_pallete.dart';
@@ -185,8 +187,7 @@ class _ScanScreenState extends State<ScanScreen> {
 
   Future<void> _initializeCamera() async {
     try {
-      final cameras =
-      await availableCameras(); // Get available cameras on the device
+      final cameras = await availableCameras(); // Get available cameras on the device
       final firstCamera = cameras.first; // Choose the first available camera
 
       _cameraController = CameraController(
@@ -203,8 +204,7 @@ class _ScanScreenState extends State<ScanScreen> {
 
   @override
   void dispose() {
-    _cameraController
-        ?.dispose(); // Dispose of the camera controller to release resources
+    _cameraController?.dispose(); // Dispose of the camera controller to release resources
     super.dispose();
   }
 
@@ -252,11 +252,45 @@ class _ScanScreenState extends State<ScanScreen> {
           desiredAccuracy: LocationAccuracy.high);
 
       setState(() {
-        _location =
-        'Lat: ${position.latitude}, Long: ${position.longitude}'; // Store the location
+        _location = 'Lat: ${position.latitude}, Long: ${position.longitude}'; // Store the location
       });
     } catch (e) {
       print('Error getting location: $e');
+    }
+  }
+
+  Future<void> _sendDataToServer() async {
+    try {
+      if (_capturedImage != null && _location != null) {
+        // Convert image to base64
+        final bytes = await _capturedImage!.readAsBytes();
+        String base64Image = base64Encode(bytes);
+
+        // Prepare data to send
+        Map<String, dynamic> data = {
+          'image': base64Image,
+          'location': _location,
+        };
+
+        // Send HTTP POST request
+        final response = await http.post(
+          Uri.parse('http://192.168.8.125:5000/upload'), // Update with your backend URL
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: json.encode(data),
+        );
+
+        if (response.statusCode == 200) {
+          // Successfully sent data
+          print('Data sent to server successfully');
+        } else {
+          // Handle error response
+          print('Failed to send data: ${response.statusCode}');
+        }
+      }
+    } catch (e) {
+      print('Error sending data to server: $e');
     }
   }
 
@@ -264,6 +298,7 @@ class _ScanScreenState extends State<ScanScreen> {
     try {
       if (_capturedImage != null) {
         await _getLocation(); // Get the user's location before scanning
+        await _sendDataToServer(); // Send the image and location data to the backend
 
         // TODO: Implement your scanning logic here
 
@@ -278,8 +313,7 @@ class _ScanScreenState extends State<ScanScreen> {
           context: context,
           builder: (context) => AlertDialog(
             title: Text('Scan Complete'),
-            content: Text(
-                'The disease scan is complete.\nLocation: $_location'), // Display the location
+            content: Text('The disease scan is complete.\nLocation: $_location'), // Display the location
             actions: [
               TextButton(
                 onPressed: () {
@@ -353,8 +387,5 @@ class _ScanScreenState extends State<ScanScreen> {
     );
   }
 }
-
-
-
 
 
