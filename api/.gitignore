@@ -1,0 +1,37 @@
+# Python
+*.pyc
+__pycache__/
+
+# Virtual Environment
+myenv/
+venv/
+ENV/
+env/
+
+# Flask instance folder
+instance/
+*.db
+
+# PyCharm project files
+.idea/
+
+# VS Code project files
+.vscode/
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# Logs
+*.log
+
+# Environment variables
+.env
+
+# OS-specific files
+.DS_Store
+Thumbs.db
+
+# Package management
+pip-log.txt
+pip-wheel-metadata/
+__pypackages__/
