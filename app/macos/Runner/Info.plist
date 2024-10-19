@@ -28,5 +28,11 @@
 	<string>MainMenu</string>
 	<key>NSPrincipalClass</key>
 	<string>NSApplication</string>
+
+	<key>NSCameraUsageDescription</key>
+	<string>We need access to the camera for disease scanning.</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>We need access to your location to send scan data to the server.</string>
+
 </dict>
 </plist>
