@@ -82,6 +82,35 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
+            // Add Scan Button
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(vertical: 40.0),
+                    backgroundColor: AppPallete.mainGreen,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(15.0),
+                    ),
+                  ),
+                  onPressed: () {
+                    context.go('/scan'); // Navigate to the scan page
+                  },
+                  child: const Text(
+                    "Scan Tea Leaves",
+                    style: TextStyle(
+                      fontSize: 18,
+                      color: AppPallete.whiteColor,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
+            ),
+
+            const SizedBox(height: 16),
           ],
         ),
       ),
