@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class DiseaseCard extends StatelessWidget {
   final String title;
-  final String tagline;
+  // final String tagline;
   final String imageUrl;
   final double height;
   final double width;
@@ -10,7 +10,7 @@ class DiseaseCard extends StatelessWidget {
   const DiseaseCard({
     super.key,
     required this.title,
-    required this.tagline,
+    // required this.tagline,
     required this.imageUrl,
     this.height = 200, // Default height if not specified
     this.width = 150, // Default width if not specified
@@ -47,13 +47,13 @@ class DiseaseCard extends StatelessWidget {
               overflow: TextOverflow.ellipsis,
             ),
             const SizedBox(height: 8),
-            Flexible(
-              child: Text(
-                tagline,
-                maxLines: 2,
-                overflow: TextOverflow.ellipsis,
-              ),
-            ),
+            // Flexible(
+            //   child: Text(
+            //     tagline,
+            //     maxLines: 2,
+            //     overflow: TextOverflow.ellipsis,
+            //   ),
+            // ),
           ],
         ),
       ),

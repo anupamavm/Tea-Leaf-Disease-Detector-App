@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AllDiseaseCard extends StatelessWidget {
   final String title;
-  final String tagline;
+  // final String tagline;
   final String description;
   final String subdesc;
   final String imageUrl;
@@ -10,7 +10,7 @@ class AllDiseaseCard extends StatelessWidget {
   const AllDiseaseCard({
     super.key,
     required this.title,
-    required this.tagline,
+    // required this.tagline,
     required this.description,
     required this.subdesc,
     required this.imageUrl,
@@ -51,14 +51,14 @@ class AllDiseaseCard extends StatelessWidget {
                     overflow: TextOverflow.ellipsis,
                   ),
                   const SizedBox(height: 8),
-                  Text(
-                    tagline,
-                    style: const TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
+                  // Text(
+                  //   tagline,
+                  //   style: const TextStyle(
+                  //     fontWeight: FontWeight.bold,
+                  //   ),
+                  //   maxLines: 1,
+                  //   overflow: TextOverflow.ellipsis,
+                  // ),
                   const SizedBox(height: 8),
                   Text(
                     subdesc,

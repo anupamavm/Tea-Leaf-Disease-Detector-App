@@ -74,7 +74,7 @@ class HomeScreen extends StatelessWidget {
                     },
                     child: DiseaseCard(
                       title: disease.title,
-                      tagline: disease.tagline,
+                      // tagline: disease.tagline,
                       imageUrl: disease.imageUrl,
                     ),
                   );

@@ -22,7 +22,7 @@ class AllDiseasesScreen extends StatelessWidget {
             },
             child: AllDiseaseCard(
               title: disease.title,
-              tagline: disease.tagline,
+              // tagline: disease.tagline,
               description: disease.description,
               imageUrl: disease.imageUrl,
               subdesc: disease.subdesc,
