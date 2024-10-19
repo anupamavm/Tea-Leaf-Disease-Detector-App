@@ -157,8 +157,8 @@
 
 
 
-
 import 'dart:convert'; // For encoding JSON data
+import 'dart:io'; // For File
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:camera/camera.dart';
@@ -262,25 +262,28 @@ class _ScanScreenState extends State<ScanScreen> {
   Future<void> _sendDataToServer() async {
     try {
       if (_capturedImage != null && _location != null) {
-        // Convert image to base64
-        final bytes = await _capturedImage!.readAsBytes();
-        String base64Image = base64Encode(bytes);
-
-        // Prepare data to send
-        Map<String, dynamic> data = {
-          'image': base64Image,
-          'location': _location,
-        };
-
-        // Send HTTP POST request
-        final response = await http.post(
+        // Prepare a multipart request
+        var request = http.MultipartRequest(
+          'POST',
           Uri.parse('http://192.168.8.125:5000/upload'), // Update with your backend URL
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: json.encode(data),
         );
 
+        // Convert image file to a multipart file
+        var file = await http.MultipartFile.fromPath(
+          'file', // The name of the file parameter in your Flask code
+          _capturedImage!.path,
+        );
+
+        // Add the file to the request
+        request.files.add(file);
+
+        // Add location to the request
+        request.fields['location'] = _location!; // Sending location as a form field
+
+        // Send the request
+        var response = await request.send();
+
+        // Handle the response
         if (response.statusCode == 200) {
           // Successfully sent data
           print('Data sent to server successfully');
@@ -387,5 +390,3 @@ class _ScanScreenState extends State<ScanScreen> {
     );
   }
 }
-
-
