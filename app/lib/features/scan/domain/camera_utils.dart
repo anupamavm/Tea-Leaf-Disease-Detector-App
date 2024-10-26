@@ -6,6 +6,11 @@ import 'package:image/image.dart' as img; // Import the image package
 Future<CameraController?> initializeCamera() async {
   try {
     final cameras = await availableCameras(); // Get available cameras
+    if (cameras.isEmpty) {
+      print('No cameras found');
+      return null;
+    }
+
     final firstCamera = cameras.first; // Choose the first available camera
 
     CameraController cameraController = CameraController(
@@ -30,6 +35,8 @@ Future<XFile?> captureImage(CameraController? cameraController) async {
       // Convert the captured image to JPEG format
       final jpegImage = await _convertToJpg(image);
       return jpegImage; // Return the converted image in JPEG format
+    } else {
+      print('Camera controller is not initialized');
     }
   } catch (e) {
     print('Error capturing image: $e');
@@ -57,6 +64,8 @@ Future<XFile?> _convertToJpg(XFile image) async {
 
       // Return the new JPEG image as an XFile
       return XFile(jpgFile.path);
+    } else {
+      print('Failed to decode image');
     }
   } catch (e) {
     print('Error converting image to JPG: $e');

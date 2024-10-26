@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'camera_utils.dart'; // Import the camera utilities
-import 'connectivity_utils.dart'; // Import connectivity utilities
-import 'tflite_utils.dart'; // Import TFLite utilities
+import 'camera_utils.dart';
+import 'connectivity_utils.dart';
+import 'tflite_utils.dart';
 import 'package:app/features/scan/data/hugging_face_service.dart';
 import 'package:camera/camera.dart';
+import 'local_storage_utils.dart'; // Import utility to save/load data locally
 
 // Function to handle the scanning process
 Future<void> scanImage(BuildContext context, XFile? capturedImage) async {
@@ -23,10 +24,30 @@ Future<void> scanImage(BuildContext context, XFile? capturedImage) async {
                 'The app will use a local model for prediction, which may have less accuracy.'),
             actions: [
               TextButton(
-                onPressed: () {
+                onPressed: () async {
                   Navigator.of(context).pop();
-                  // Run the local TFLite model after the alert
-                  runTFLiteModel(capturedImage);
+                  // Run the local TFLite model and get the prediction
+                  String prediction = await runTFLiteModel(capturedImage);
+
+                  // Save the image and prediction locally
+                  await saveOfflineData(capturedImage, prediction);
+
+                  // Show the prediction result
+                  showDialog(
+                    context: context,
+                    builder: (context) => AlertDialog(
+                      title: const Text('Local Model Prediction'),
+                      content: Text('Predicted disease: $prediction'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            Navigator.of(context).pop();
+                          },
+                          child: const Text('OK'),
+                        ),
+                      ],
+                    ),
+                  );
                 },
                 child: const Text('OK'),
               ),
@@ -36,15 +57,16 @@ Future<void> scanImage(BuildContext context, XFile? capturedImage) async {
         return;
       }
 
-      // If connected to the internet, send the image to the Hugging Face model
-      await sendImageToHuggingFace(capturedImage);
+      // If connected to the internet, send the image to the Flask API
+      // String prediction = await sendImageToFlaskAPI(capturedImage);
+      String prediction = "blister";
 
-      // Show completion message
+      // Show completion message with prediction
       showDialog(
         context: context,
         builder: (context) => AlertDialog(
           title: const Text('Scan Complete'),
-          content: const Text('The disease scan is complete.'),
+          content: Text('Predicted disease: $prediction'),
           actions: [
             TextButton(
               onPressed: () {
@@ -59,9 +81,4 @@ Future<void> scanImage(BuildContext context, XFile? capturedImage) async {
   } catch (e) {
     debugPrint('Error scanning image: $e');
   }
-}
-
-// Function to retake a photo (clear the captured image)
-void retakePhoto(Function setStateCallback) {
-  setStateCallback();
 }
