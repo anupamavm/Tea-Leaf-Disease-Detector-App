@@ -21,13 +21,6 @@ class CameraView extends StatelessWidget {
     return Container(
       width: width,
       height: height,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(15.0),
-        border: Border.all(
-          color: Colors.black, // Set the border color
-          width: 2.0, // Set the border width
-        ),
-      ),
       child: capturedImage != null
           ? Image.file(
               File(capturedImage!.path), // Display the captured image

@@ -8,8 +8,6 @@ import 'package:app/core/theme/app_pallete.dart';
 // Import the newly split utility files
 import '../domain/camera_utils.dart'; // Camera-related utilities
 import '../domain/scan_utils.dart'; // Scan-related utilities
-import '../domain/location_utils.dart';
-import '../domain/server_utils.dart';
 
 class ScanScreen extends StatefulWidget {
   const ScanScreen({super.key});
@@ -22,7 +20,6 @@ class _ScanScreenState extends State<ScanScreen> {
   CameraController? _cameraController;
   XFile? _capturedImage;
   bool _imageCaptured = false;
-  String? _location;
 
   @override
   void initState() {
@@ -44,37 +41,6 @@ class _ScanScreenState extends State<ScanScreen> {
         _capturedImage = image;
         _imageCaptured = true; // Mark that an image has been captured
       });
-    }
-  }
-
-  Future<void> _scanImage() async {
-    if (_capturedImage != null) {
-      _location = await getLocation(); // Get location
-      if (_location != null) {
-        await sendDataToServer(
-            _capturedImage!.path, _location!); // Send data to server
-      }
-
-      setState(() {
-        _imageCaptured = false;
-        _capturedImage = null;
-      });
-
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Scan Complete'),
-          content: Text('The disease scan is complete.\nLocation: $_location'),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-              child: const Text('OK'),
-            ),
-          ],
-        ),
-      );
     }
   }
 
@@ -152,7 +118,8 @@ class _ScanScreenState extends State<ScanScreen> {
                           child: CaptureScanButton(
                             imageCaptured: _imageCaptured,
                             onCapturePressed: _captureImage,
-                            onScanPressed: _scanImage,
+                            onScanPressed: () => scanImage(
+                                context, _capturedImage), // Call scanImage
                             buttonColor: AppPallete.mainGreen,
                           ),
                         ),
@@ -161,7 +128,8 @@ class _ScanScreenState extends State<ScanScreen> {
                   : CaptureScanButton(
                       imageCaptured: _imageCaptured,
                       onCapturePressed: _captureImage,
-                      onScanPressed: _scanImage,
+                      onScanPressed: () =>
+                          scanImage(context, _capturedImage), // Call scanImage
                       buttonColor: AppPallete.mainGreen,
                     ),
             ),
