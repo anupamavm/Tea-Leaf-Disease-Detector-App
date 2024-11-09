@@ -1,4 +1,4 @@
-import 'package:app/core/theme/app_pallete.dart';
+import 'package:Drtealeaf/core/theme/app_pallete.dart';
 import 'package:flutter/material.dart';
 
 class AuthGradientButton extends StatelessWidget {

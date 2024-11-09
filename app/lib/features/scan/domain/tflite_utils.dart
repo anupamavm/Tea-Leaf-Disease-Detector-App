@@ -1,72 +1,43 @@
-import 'dart:developer' as developer;
-import 'dart:io';
-import 'package:tflite_flutter/tflite_flutter.dart';
-import 'package:flutter/services.dart';
-import 'package:image/image.dart' as img;
+import 'package:flutter/material.dart';
+import 'package:flutter_tflite/flutter_tflite.dart';
+import 'package:camera/camera.dart';
 
-// Function to load and run TFLite model
-Future<String> runTFLiteModel(capturedImage) async {
+Future<void> _tfLteInit() async {
   try {
-    // Load the model from assets
-    final interpreter = await Interpreter.fromAsset('model_unquant.tflite');
-
-    // Load and process labels
-    final labels = await loadLabels('assets/labels.txt');
-
-    // Load the image file
-    File imageFile = File(capturedImage.path);
-    img.Image image = img.decodeImage(imageFile.readAsBytesSync())!;
-
-    // Resize the image to the input size required by the model
-    img.Image resizedImage = img.copyResize(image, width: 224, height: 224);
-
-    // Normalize the pixel values (0-255 to 0-1)
-    var input = imageToTensor(resizedImage);
-
-    // Prepare the output tensor with appropriate size (1x4 for 4 classes)
-    var output = List.filled(1 * 4, 0.0).reshape([1, 4]);
-
-    // Run inference
-    interpreter.run(input, output);
-
-    // Close interpreter to free resources
-    interpreter.close();
-
-    // Find the index with the highest score
-    int maxIndex = output[0].indexWhere(
-        (score) => score == output[0].reduce((a, b) => a > b ? a : b));
-    String predictedLabel = labels[maxIndex];
-
-    developer.log('TFLite model prediction: $predictedLabel',
-        name: 'TFLiteModel');
-    return predictedLabel; // Return the predicted label
+    debugPrint("Initializing TFLite model...");
+    String? res = await Tflite.loadModel(
+      model: "assets/model_unquant.tflite",
+      labels: "assets/labels.txt",
+      numThreads: 1, // defaults to 1
+      isAsset:
+          true, // defaults to true, set to false to load resources outside assets
+      useGpuDelegate:
+          false, // defaults to false, set to true to use GPU delegate
+    );
+    debugPrint("TFLite model loaded successfully: $res");
   } catch (e) {
-    developer.log('Error running TFLite model: $e', name: 'TFLiteModel');
-    return 'Error in prediction';
+    debugPrint("Error loading TFLite model: $e");
   }
 }
 
-// Function to convert the image to a tensor
-List<List<List<List<double>>>> imageToTensor(img.Image image) {
-  List<List<List<List<double>>>> tensor = List.generate(
-    1,
-    (index) => List.generate(
-      224,
-      (y) => List.generate(224, (x) {
-        int pixel = image.getPixel(x, y);
-        return [
-          ((pixel >> 16) & 0xFF) / 255.0, // Red channel
-          ((pixel >> 8) & 0xFF) / 255.0, // Green channel
-          (pixel & 0xFF) / 255.0, // Blue channel
-        ];
-      }),
-    ),
-  );
-  return tensor;
-}
+Future<List<dynamic>?> runTFLiteModel(XFile capturedImage) async {
+  try {
+    debugPrint("Running TFLite model on image: ${capturedImage.path}");
+    var recognitions = await Tflite.runModelOnImage(
+      path: capturedImage.path, // Image path is passed correctly
+      imageMean: 0.0, // defaults to 117.0
+      imageStd: 255.0, // defaults to 1.0
+      numResults: 2, // defaults to 5
+      threshold: 0.2, // defaults to 0.1
+      asynch: true, // defaults to true
+    );
 
-// Function to load labels from assets
-Future<List<String>> loadLabels(String path) async {
-  final labelData = await rootBundle.loadString(path);
-  return labelData.split('\n');
+    debugPrint("TFLite model predictions: $recognitions");
+
+    // Return the recognitions (predictions)
+    return recognitions;
+  } catch (e) {
+    debugPrint("Error during TFLite model prediction: $e");
+    return null; // Return null if there is an error
+  }
 }

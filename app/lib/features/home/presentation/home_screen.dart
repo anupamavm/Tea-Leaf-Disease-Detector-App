@@ -1,5 +1,5 @@
-import 'package:app/core/theme/app_pallete.dart';
-import 'package:app/features/home/presentation/widgets/disease_card.dart';
+import 'package:Drtealeaf/core/theme/app_pallete.dart';
+import 'package:Drtealeaf/features/home/presentation/widgets/disease_card.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../info/data/disease_data.dart';

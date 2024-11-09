@@ -1,5 +1,6 @@
 // lib/core/loading/loading_screen.dart
-import 'package:app/core/theme/app_pallete.dart';
+
+import 'package:Drtealeaf/core/theme/app_pallete.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -43,15 +44,14 @@ class _LoadingScreenState extends State<LoadingScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:
-          AppPallete.mainGreen, // Set your desired background color here
+      backgroundColor: AppPallete.mainGreen,
       body: Center(
         child: FadeTransition(
           opacity: _animation,
-          child: const Icon(
-            Icons.scanner,
-            size: 100,
-            color: AppPallete.whiteColor,
+          child: Image.asset(
+            'assets/logo.png', // Path to your PNG logo
+            width: 100, // Set the desired width
+            height: 100, // Set the desired height
           ),
         ),
       ),

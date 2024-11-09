@@ -1,13 +1,12 @@
+import 'package:Drtealeaf/core/theme/app_pallete.dart';
+import 'package:Drtealeaf/features/scan/domain/scan_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:camera/camera.dart';
 import './widgets/camera_view.dart';
 import './widgets/capture_scan_button.dart';
-import 'package:app/core/theme/app_pallete.dart';
-
-// Import the newly split utility files
 import '../domain/camera_utils.dart'; // Camera-related utilities
-import '../domain/scan_utils.dart'; // Scan-related utilities
+import '../domain/location_utils.dart'; // Location utilities
 
 class ScanScreen extends StatefulWidget {
   const ScanScreen({super.key});
@@ -20,49 +19,102 @@ class _ScanScreenState extends State<ScanScreen> {
   CameraController? _cameraController;
   XFile? _capturedImage;
   bool _imageCaptured = false;
+  String? _location;
 
   @override
   void initState() {
     super.initState();
-    _initializeCamera(); // Initialize the camera when the screen is first created
+    _initializeCamera();
   }
 
   Future<void> _initializeCamera() async {
-    _cameraController = await initializeCamera();
-    if (_cameraController != null) {
-      setState(() {}); // Refresh the UI after the camera is initialized
+    try {
+      _cameraController = await initializeCamera();
+      if (_cameraController != null) {
+        setState(() {});
+      }
+    } catch (e) {
+      debugPrint('Error initializing camera: $e');
     }
   }
 
   Future<void> _captureImage() async {
-    final image = await captureImage(_cameraController);
-    if (image != null) {
+    try {
+      final image = await captureImage(_cameraController);
+      if (image != null) {
+        setState(() {
+          _capturedImage = image;
+          _imageCaptured = true;
+        });
+      }
+    } catch (e) {
+      debugPrint('Error capturing image: $e');
+    }
+  }
+
+  Future<void> _scanImage() async {
+    if (_capturedImage != null) {
+      try {
+        // Get location before scanning
+        _location = await getLocation();
+
+        if (_location != null) {
+          // Call scanImage and get prediction results
+          var prediction = await scanImage(context, _capturedImage!, _location);
+
+          // Show a dialog with the prediction result
+          if (prediction != null) {
+            String result = prediction['label'];
+            double confidence = prediction['confidence'];
+
+            // Show the prediction in a dialog box
+            showDialog(
+              context: context,
+              builder: (context) => AlertDialog(
+                title: const Text('Prediction Result'),
+                content: Text(
+                  'Predicted: $result\nConfidence: ${confidence.toStringAsFixed(2)}',
+                ),
+                actions: [
+                  TextButton(
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text('OK'),
+                  ),
+                ],
+              ),
+            );
+          }
+        }
+      } catch (e) {
+        debugPrint('Error getting location or scanning image: $e');
+      }
+
       setState(() {
-        _capturedImage = image;
-        _imageCaptured = true; // Mark that an image has been captured
+        _imageCaptured = false;
+        _capturedImage = null;
       });
     }
   }
 
-  // Add the retake function
   void _retakePhoto() {
     setState(() {
-      _capturedImage = null; // Clear the captured image
-      _imageCaptured = false; // Allow user to capture again
+      _capturedImage = null;
+      _imageCaptured = false;
     });
   }
 
   @override
   void dispose() {
-    _cameraController
-        ?.dispose(); // Dispose of the camera controller to release resources
+    _cameraController?.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    double cameraViewWidth = 400.0; // Customize the width of the camera view
-    double cameraViewHeight = 450.0; // Customize the height of the camera view
+    double cameraViewWidth = 400.0;
+    double cameraViewHeight = 450.0;
 
     return Scaffold(
       body: Column(
@@ -79,25 +131,26 @@ class _ScanScreenState extends State<ScanScreen> {
                     GoRouter.of(context).go('/user_guide');
                   },
                 ),
-                const Spacer(), // Spacer to push the title to the center
                 const Text(
-                  'Scan for diseases',
+                  'Scan for Diseases',
                   style: TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                const Spacer(flex: 2), // Adjust spacer to balance the layout
+                const Spacer(flex: 2),
               ],
             ),
           ),
           Center(
-            child: CameraView(
-              cameraController: _cameraController,
-              capturedImage: _capturedImage,
-              width: cameraViewWidth,
-              height: cameraViewHeight,
-            ),
+            child: _cameraController == null
+                ? const CircularProgressIndicator()
+                : CameraView(
+                    cameraController: _cameraController,
+                    capturedImage: _capturedImage,
+                    width: cameraViewWidth,
+                    height: cameraViewHeight,
+                  ),
           ),
           const Spacer(),
           Padding(
@@ -107,19 +160,16 @@ class _ScanScreenState extends State<ScanScreen> {
                   ? Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        // Retake Button with an Icon
                         IconButton(
                           icon: const Icon(Icons.replay,
                               color: AppPallete.mainGreen, size: 36),
                           onPressed: _retakePhoto,
                         ),
-                        // Scan Button
                         Expanded(
                           child: CaptureScanButton(
                             imageCaptured: _imageCaptured,
                             onCapturePressed: _captureImage,
-                            onScanPressed: () => scanImage(
-                                context, _capturedImage), // Call scanImage
+                            onScanPressed: _scanImage,
                             buttonColor: AppPallete.mainGreen,
                           ),
                         ),
@@ -128,8 +178,7 @@ class _ScanScreenState extends State<ScanScreen> {
                   : CaptureScanButton(
                       imageCaptured: _imageCaptured,
                       onCapturePressed: _captureImage,
-                      onScanPressed: () =>
-                          scanImage(context, _capturedImage), // Call scanImage
+                      onScanPressed: _scanImage,
                       buttonColor: AppPallete.mainGreen,
                     ),
             ),

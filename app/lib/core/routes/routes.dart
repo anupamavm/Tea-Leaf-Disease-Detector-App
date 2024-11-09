@@ -1,12 +1,12 @@
-import 'package:app/core/theme/app_pallete.dart';
-import 'package:app/features/auth/presentation/pages/login_page.dart';
-import 'package:app/features/home/presentation/home_screen.dart';
-import 'package:app/features/map/presentation/history.dart';
-import 'package:app/features/map/presentation/map_screen.dart';
-import 'package:app/features/scan/presentation/scan_screen.dart';
-import 'package:app/features/settings/presentation/settings_screen.dart';
-import 'package:app/core/loading/loading_screen.dart';
-import 'package:app/features/info/presentation/all_diseases_screen.dart';
+import 'package:Drtealeaf/core/loading/loading_screen.dart';
+import 'package:Drtealeaf/core/theme/app_pallete.dart';
+import 'package:Drtealeaf/features/auth/presentation/pages/login_page.dart';
+import 'package:Drtealeaf/features/home/presentation/home_screen.dart';
+import 'package:Drtealeaf/features/info/presentation/all_diseases_screen.dart';
+import 'package:Drtealeaf/features/map/presentation/history.dart';
+import 'package:Drtealeaf/features/map/presentation/map_screen.dart';
+import 'package:Drtealeaf/features/scan/presentation/scan_screen.dart';
+import 'package:Drtealeaf/features/settings/presentation/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -22,11 +22,13 @@ final GoRouter router = GoRouter(
   routes: [
     GoRoute(
       path: '/loading',
-      pageBuilder: (context, state) => const NoTransitionPage(child: LoadingScreen()),
+      pageBuilder: (context, state) =>
+          const NoTransitionPage(child: LoadingScreen()),
     ),
     GoRoute(
       path: '/login',
-      pageBuilder: (context, state) => const NoTransitionPage(child: LoginPage()),
+      pageBuilder: (context, state) =>
+          const NoTransitionPage(child: LoginPage()),
     ),
     ShellRoute(
       navigatorKey: _rootNavigatorKey,
@@ -46,7 +48,8 @@ final GoRouter router = GoRouter(
         ),
         GoRoute(
           path: '/map',
-          pageBuilder: (context, state) => const NoTransitionPage(child: MapScreen()),
+          pageBuilder: (context, state) =>
+              const NoTransitionPage(child: MapScreen()),
         ),
         GoRoute(
           path: '/settings',
@@ -82,33 +85,38 @@ final GoRouter router = GoRouter(
   ],
 );
 
-class ScaffoldWithNavBar extends StatelessWidget {
+class ScaffoldWithNavBar extends StatefulWidget {
   final Widget child;
 
   const ScaffoldWithNavBar({super.key, required this.child});
 
   @override
+  _ScaffoldWithNavBarState createState() => _ScaffoldWithNavBarState();
+}
+
+class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
+  int _selectedIndex = 0;
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: child,
+      body: IndexedStack(
+        index: _selectedIndex,
+        children: [
+          const HomeScreen(),
+          const ScanScreen(),
+          const MapScreen(),
+        ],
+      ),
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: const Color.fromARGB(255, 16, 63, 86),
-        currentIndex: _calculateSelectedIndex(context),
+        backgroundColor: AppPallete.mainGreen,
+        currentIndex: _selectedIndex,
+        selectedItemColor: AppPallete.whiteColor,
+        unselectedItemColor: Colors.white70,
         onTap: (index) {
-          switch (index) {
-            case 0:
-              context.go('/');
-              break;
-            case 1:
-              context.go('/scan');
-              break;
-            case 2:
-              context.go('/map');
-              break;
-            case 3:
-              context.go('/settings');
-              break;
-          }
+          setState(() {
+            _selectedIndex = index;
+          });
         },
         items: const [
           BottomNavigationBarItem(
@@ -126,30 +134,80 @@ class ScaffoldWithNavBar extends StatelessWidget {
             label: 'Map',
             backgroundColor: AppPallete.mainGreen,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.settings),
-            label: 'Settings',
-            backgroundColor: AppPallete.mainGreen,
-          ),
         ],
       ),
     );
   }
-
-  int _calculateSelectedIndex(BuildContext context) {
-    final String location = GoRouterState.of(context).location;
-    if (location == '/scan') {
-      return 1;
-    }
-    if (location == '/map') {
-      return 2;
-    }
-    if (location == '/settings') {
-      return 3;
-    }
-    if (location == '/profile') {
-      return 4;
-    }
-    return 0;
-  }
 }
+
+// class ScaffoldWithNavBar extends StatelessWidget {
+//   final Widget child;
+
+//   const ScaffoldWithNavBar({super.key, required this.child});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       body: child,
+//       bottomNavigationBar: BottomNavigationBar(
+//         backgroundColor: const Color.fromARGB(255, 16, 63, 86),
+//         currentIndex: _calculateSelectedIndex(context),
+//         onTap: (index) {
+//           switch (index) {
+//             case 0:
+//               context.go('/');
+//               break;
+//             case 1:
+//               context.go('/scan');
+//               break;
+//             case 2:
+//               context.go('/map');
+//               break;
+//             case 3:
+//               context.go('/settings');
+//               break;
+//           }
+//         },
+//         items: const [
+//           BottomNavigationBarItem(
+//             icon: Icon(Icons.home),
+//             label: 'Home',
+//             backgroundColor: AppPallete.mainGreen,
+//           ),
+//           BottomNavigationBarItem(
+//             icon: Icon(Icons.scanner),
+//             label: 'Scan',
+//             backgroundColor: AppPallete.mainGreen,
+//           ),
+//           BottomNavigationBarItem(
+//             icon: Icon(Icons.map),
+//             label: 'Map',
+//             backgroundColor: AppPallete.mainGreen,
+//           ),
+//           BottomNavigationBarItem(
+//             icon: Icon(Icons.settings),
+//             label: 'Settings',
+//             backgroundColor: AppPallete.mainGreen,
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+
+//   int _calculateSelectedIndex(BuildContext context) {
+//     final String location = GoRouterState.of(context).location;
+//     if (location == '/scan') {
+//       return 1;
+//     }
+//     if (location == '/map') {
+//       return 2;
+//     }
+//     if (location == '/settings') {
+//       return 3;
+//     }
+//     if (location == '/profile') {
+//       return 4;
+//     }
+//     return 0;
+//   }
+// }
