@@ -54,7 +54,8 @@ class _MapScreenState extends State<MapScreen> {
 
   // Method to fetch locations from the server and add markers
   Future<void> _fetchLocationMarkers() async {
-    const String apiUrl = 'http://127.0.0.1/locations';
+    const String apiUrl =
+        'http://35.244.22.197:80/locations'; // Add full API URL
 
     try {
       final response = await http.get(Uri.parse(apiUrl));
@@ -63,12 +64,17 @@ class _MapScreenState extends State<MapScreen> {
         final data = jsonDecode(response.body);
 
         if (data['locations'] is List) {
-          List<String> locations = List<String>.from(data['locations']);
+          List locations = data['locations'];
 
           setState(() {
             _markers.clear(); // Clear existing markers
-            for (var location in locations) {
+            for (var locationData in locations) {
               try {
+                String location = locationData['location'];
+                String disease = locationData['disease'];
+                double score = locationData['score'];
+
+                // Split the location string into latitude and longitude
                 List<String> latLng = location.split(',');
                 if (latLng.length == 2) {
                   double latitude = double.parse(latLng[0].trim());
@@ -79,7 +85,9 @@ class _MapScreenState extends State<MapScreen> {
                     markerId: MarkerId(location),
                     position: LatLng(latitude, longitude),
                     infoWindow: InfoWindow(
-                      title: 'Marker at ($latitude, $longitude)',
+                      title: 'Disease: $disease',
+                      snippet:
+                          'Confidence: ${(score * 100).toStringAsFixed(2)}%', // Convert score to percentage
                     ),
                     icon: BitmapDescriptor.defaultMarkerWithHue(
                       BitmapDescriptor.hueRed,
@@ -89,7 +97,7 @@ class _MapScreenState extends State<MapScreen> {
                   _markers.add(marker);
                 }
               } catch (e) {
-                print('Error parsing location: $location, Error: $e');
+                print('Error parsing location: $locationData, Error: $e');
               }
             }
           });

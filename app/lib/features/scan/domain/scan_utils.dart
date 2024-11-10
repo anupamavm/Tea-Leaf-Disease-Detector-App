@@ -105,7 +105,7 @@ Future<Map<String, dynamic>?> sendDataToServer(
         location.isNotEmpty) {
       var request = http.MultipartRequest(
         'POST',
-        Uri.parse('http://35.244.22.197/upload'),
+        Uri.parse('http://35.244.22.197:80/upload'),
       );
 
       var file = await http.MultipartFile.fromPath('file', capturedImage.path);
