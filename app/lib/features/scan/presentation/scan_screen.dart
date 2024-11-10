@@ -78,29 +78,6 @@ class _ScanScreenState extends State<ScanScreen> {
 
         if (_location != null) {
           var prediction = await scanImage(context, _capturedImage!, _location);
-
-          if (prediction != null) {
-            String result = prediction['label'];
-            double confidence = prediction['confidence'];
-
-            showDialog(
-              context: context,
-              builder: (context) => AlertDialog(
-                title: const Text('Prediction Result'),
-                content: Text(
-                  'Predicted: $result\nConfidence: ${confidence.toStringAsFixed(2)}',
-                ),
-                actions: [
-                  TextButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    child: const Text('OK'),
-                  ),
-                ],
-              ),
-            );
-          }
         }
       } catch (e) {
         debugPrint('Error getting location or scanning image: $e');
