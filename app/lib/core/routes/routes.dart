@@ -85,38 +85,33 @@ final GoRouter router = GoRouter(
   ],
 );
 
-class ScaffoldWithNavBar extends StatefulWidget {
+class ScaffoldWithNavBar extends StatelessWidget {
   final Widget child;
 
   const ScaffoldWithNavBar({super.key, required this.child});
 
   @override
-  _ScaffoldWithNavBarState createState() => _ScaffoldWithNavBarState();
-}
-
-class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
-  int _selectedIndex = 0;
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: IndexedStack(
-        index: _selectedIndex,
-        children: [
-          const HomeScreen(),
-          const ScanScreen(),
-          const MapScreen(),
-        ],
-      ),
+      body: child,
       bottomNavigationBar: BottomNavigationBar(
         backgroundColor: AppPallete.mainGreen,
-        currentIndex: _selectedIndex,
-        selectedItemColor: AppPallete.whiteColor,
-        unselectedItemColor: Colors.white70,
+        currentIndex: _calculateSelectedIndex(context),
         onTap: (index) {
-          setState(() {
-            _selectedIndex = index;
-          });
+          switch (index) {
+            case 0:
+              context.go('/');
+              break;
+            case 1:
+              context.go('/scan');
+              break;
+            case 2:
+              context.go('/map');
+              break;
+            case 3:
+              context.go('/settings');
+              break;
+          }
         },
         items: const [
           BottomNavigationBarItem(
@@ -134,80 +129,30 @@ class _ScaffoldWithNavBarState extends State<ScaffoldWithNavBar> {
             label: 'Map',
             backgroundColor: AppPallete.mainGreen,
           ),
+          // BottomNavigationBarItem(
+          //   icon: Icon(Icons.settings),
+          //   label: 'Settings',
+          //   backgroundColor: AppPallete.mainGreen,
+          // ),
         ],
       ),
     );
   }
+
+  int _calculateSelectedIndex(BuildContext context) {
+    final String location = GoRouterState.of(context).location;
+    if (location == '/scan') {
+      return 1;
+    }
+    if (location == '/map') {
+      return 2;
+    }
+    if (location == '/settings') {
+      return 3;
+    }
+    if (location == '/profile') {
+      return 4;
+    }
+    return 0;
+  }
 }
-
-// class ScaffoldWithNavBar extends StatelessWidget {
-//   final Widget child;
-
-//   const ScaffoldWithNavBar({super.key, required this.child});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: child,
-//       bottomNavigationBar: BottomNavigationBar(
-//         backgroundColor: const Color.fromARGB(255, 16, 63, 86),
-//         currentIndex: _calculateSelectedIndex(context),
-//         onTap: (index) {
-//           switch (index) {
-//             case 0:
-//               context.go('/');
-//               break;
-//             case 1:
-//               context.go('/scan');
-//               break;
-//             case 2:
-//               context.go('/map');
-//               break;
-//             case 3:
-//               context.go('/settings');
-//               break;
-//           }
-//         },
-//         items: const [
-//           BottomNavigationBarItem(
-//             icon: Icon(Icons.home),
-//             label: 'Home',
-//             backgroundColor: AppPallete.mainGreen,
-//           ),
-//           BottomNavigationBarItem(
-//             icon: Icon(Icons.scanner),
-//             label: 'Scan',
-//             backgroundColor: AppPallete.mainGreen,
-//           ),
-//           BottomNavigationBarItem(
-//             icon: Icon(Icons.map),
-//             label: 'Map',
-//             backgroundColor: AppPallete.mainGreen,
-//           ),
-//           BottomNavigationBarItem(
-//             icon: Icon(Icons.settings),
-//             label: 'Settings',
-//             backgroundColor: AppPallete.mainGreen,
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-
-//   int _calculateSelectedIndex(BuildContext context) {
-//     final String location = GoRouterState.of(context).location;
-//     if (location == '/scan') {
-//       return 1;
-//     }
-//     if (location == '/map') {
-//       return 2;
-//     }
-//     if (location == '/settings') {
-//       return 3;
-//     }
-//     if (location == '/profile') {
-//       return 4;
-//     }
-//     return 0;
-//   }
-// }
