@@ -54,7 +54,7 @@ class _MapScreenState extends State<MapScreen> {
 
   // Method to fetch locations from the server and add markers
   Future<void> _fetchLocationMarkers() async {
-    const String apiUrl = 'http://35.244.22.197:80/locations';
+    const String apiUrl = 'http://127.0.0.1/locations';
 
     try {
       final response = await http.get(Uri.parse(apiUrl));
