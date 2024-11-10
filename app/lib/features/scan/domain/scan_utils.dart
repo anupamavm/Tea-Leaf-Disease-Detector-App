@@ -1,9 +1,52 @@
+import 'package:Drtealeaf/features/scan/domain/connectivity_utils.dart';
 import 'package:flutter/material.dart';
-import 'connectivity_utils.dart'; // Import connectivity utilities
-import 'tflite_utils.dart'; // Import TFLite utilities
+import 'package:flutter_tflite/flutter_tflite.dart';
 import 'package:camera/camera.dart';
 import 'package:http/http.dart' as http;
 
+// Initialize the TFLite model
+Future<void> _tfLteInit() async {
+  try {
+    debugPrint("Initializing TFLite model...");
+    String? res = await Tflite.loadModel(
+      model: "assets/model_unquant.tflite",
+      labels: "assets/labels.txt",
+      numThreads: 1, // defaults to 1
+      isAsset:
+          true, // defaults to true, set to false to load resources outside assets
+      useGpuDelegate:
+          false, // defaults to false, set to true to use GPU delegate
+    );
+    debugPrint("TFLite model loaded successfully: $res");
+  } catch (e) {
+    debugPrint("Error loading TFLite model: $e");
+  }
+}
+
+// Run the TFLite model on the captured image
+Future<List<dynamic>?> runTFLiteModel(XFile capturedImage) async {
+  try {
+    debugPrint("Running TFLite model on image: ${capturedImage.path}");
+    var recognitions = await Tflite.runModelOnImage(
+      path: capturedImage.path, // Image path is passed correctly
+      imageMean: 0.0, // defaults to 117.0
+      imageStd: 255.0, // defaults to 1.0
+      numResults: 2, // defaults to 5
+      threshold: 0.2, // defaults to 0.1
+      asynch: true, // defaults to true
+    );
+
+    debugPrint("TFLite model predictions: $recognitions");
+
+    // Return the recognitions (predictions)
+    return recognitions;
+  } catch (e) {
+    debugPrint("Error during TFLite model prediction: $e");
+    return null; // Return null if there is an error
+  }
+}
+
+// Scan image function
 Future<Map<String, dynamic>?> scanImage(
     BuildContext context, XFile? capturedImage, String? location) async {
   try {
@@ -11,14 +54,19 @@ Future<Map<String, dynamic>?> scanImage(
     if (capturedImage != null) {
       debugPrint("Captured image path: ${capturedImage.path}");
 
-      // Check internet connection
-      bool isConnected = true;
+      // Initialize model if not loaded
 
+      // Check internet connection
       debugPrint("Checking internet connection...");
+      bool isConnected = await hasInternetConnection();
+      // bool isConnected = false;
+
+      // If there's no internet connection, use the local TFLite model
       if (!isConnected) {
         debugPrint("No internet connection. Running local TFLite model...");
-        // Run the local TFLite model and get predictions
-        var predictions = await runTFLiteModel(capturedImage);
+        await _tfLteInit();
+        var predictions = await runTFLiteModel(
+            capturedImage); // Run the local TFLite model and get predictions
         debugPrint("Predictions from TFLite model: $predictions");
 
         if (predictions != null && predictions.isNotEmpty) {
@@ -36,8 +84,8 @@ Future<Map<String, dynamic>?> scanImage(
           debugPrint("No predictions found from TFLite model.");
         }
       } else {
+        // If there's an internet connection, send the image to the server
         debugPrint("Internet connection detected. Sending image to server...");
-        // If online, proceed with server-based scanning
         await sendImageToServer(capturedImage, location);
       }
     } else {
@@ -49,10 +97,11 @@ Future<Map<String, dynamic>?> scanImage(
   return null; // Return null if there was an error or no result
 }
 
+// Send image to server
 Future<void> sendImageToServer(XFile image, String? location) async {
   try {
-    var request = http.MultipartRequest(
-        'POST', Uri.parse('http://34.47.208.64:80/upload'));
+    var request =
+        http.MultipartRequest('POST', Uri.parse('http://35.244.22.197/upload'));
     request.fields['location'] = location ?? '';
     request.files.add(await http.MultipartFile.fromPath('image', image.path));
 

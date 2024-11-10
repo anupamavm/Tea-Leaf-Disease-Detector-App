@@ -1,11 +1,12 @@
+import 'dart:io';
 import 'package:Drtealeaf/core/theme/app_pallete.dart';
 import 'package:Drtealeaf/features/scan/domain/scan_utils.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:camera/camera.dart';
+import 'package:image_picker/image_picker.dart';
 import './widgets/camera_view.dart';
 import './widgets/capture_scan_button.dart';
-import '../domain/camera_utils.dart'; // Camera-related utilities
 import '../domain/location_utils.dart'; // Location utilities
 
 class ScanScreen extends StatefulWidget {
@@ -20,6 +21,8 @@ class _ScanScreenState extends State<ScanScreen> {
   XFile? _capturedImage;
   bool _imageCaptured = false;
   String? _location;
+  final ImagePicker picker = ImagePicker();
+  File? filePath;
 
   @override
   void initState() {
@@ -27,9 +30,18 @@ class _ScanScreenState extends State<ScanScreen> {
     _initializeCamera();
   }
 
+  // Initialize the camera
   Future<void> _initializeCamera() async {
     try {
-      _cameraController = await initializeCamera();
+      final cameras = await availableCameras();
+      final firstCamera = cameras.first;
+
+      _cameraController = CameraController(
+        firstCamera,
+        ResolutionPreset.high,
+      );
+
+      await _cameraController?.initialize();
       if (_cameraController != null) {
         setState(() {});
       }
@@ -38,36 +50,39 @@ class _ScanScreenState extends State<ScanScreen> {
     }
   }
 
+  // Capture an image using ImagePicker
   Future<void> _captureImage() async {
     try {
-      final image = await captureImage(_cameraController);
+      final XFile? image = await picker.pickImage(source: ImageSource.camera);
+
       if (image != null) {
         setState(() {
           _capturedImage = image;
           _imageCaptured = true;
+          filePath = File(image.path); // Update filePath with the image file
         });
+
+        print('Captured image path: ${image.path}');
+      } else {
+        print('No image captured.');
       }
     } catch (e) {
-      debugPrint('Error capturing image: $e');
+      print('Error capturing image: $e');
     }
   }
 
   Future<void> _scanImage() async {
     if (_capturedImage != null) {
       try {
-        // Get location before scanning
         _location = await getLocation();
 
         if (_location != null) {
-          // Call scanImage and get prediction results
           var prediction = await scanImage(context, _capturedImage!, _location);
 
-          // Show a dialog with the prediction result
           if (prediction != null) {
             String result = prediction['label'];
             double confidence = prediction['confidence'];
 
-            // Show the prediction in a dialog box
             showDialog(
               context: context,
               builder: (context) => AlertDialog(
@@ -102,6 +117,7 @@ class _ScanScreenState extends State<ScanScreen> {
     setState(() {
       _capturedImage = null;
       _imageCaptured = false;
+      filePath = null; // Clear filePath when retaking photo
     });
   }
 
@@ -114,7 +130,7 @@ class _ScanScreenState extends State<ScanScreen> {
   @override
   Widget build(BuildContext context) {
     double cameraViewWidth = 400.0;
-    double cameraViewHeight = 450.0;
+    double cameraViewHeight = 550.0;
 
     return Scaffold(
       body: Column(
