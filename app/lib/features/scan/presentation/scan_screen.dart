@@ -106,8 +106,8 @@ class _ScanScreenState extends State<ScanScreen> {
 
   @override
   Widget build(BuildContext context) {
-    double cameraViewWidth = 400.0;
-    double cameraViewHeight = 550.0;
+    double cameraViewWidth = 340.0;
+    double cameraViewHeight = 500.0;
 
     return Scaffold(
       body: Column(

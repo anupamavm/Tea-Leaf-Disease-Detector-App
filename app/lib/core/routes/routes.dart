@@ -2,6 +2,7 @@ import 'package:Drtealeaf/core/loading/loading_screen.dart';
 import 'package:Drtealeaf/core/theme/app_pallete.dart';
 import 'package:Drtealeaf/features/auth/presentation/pages/login_page.dart';
 import 'package:Drtealeaf/features/home/presentation/home_screen.dart';
+
 import 'package:Drtealeaf/features/info/presentation/all_diseases_screen.dart';
 import 'package:Drtealeaf/features/map/presentation/history.dart';
 import 'package:Drtealeaf/features/map/presentation/map_screen.dart';

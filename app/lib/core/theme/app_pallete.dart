@@ -11,4 +11,12 @@ class AppPallete {
   static const Color greyColor = Colors.grey;
   static const Color errorColor = Colors.redAccent;
   static const Color transparentColor = Color.fromARGB(0, 255, 255, 255);
+
+  static Color bgBlack =
+      Color.fromARGB(255, 255, 255, 255); // Soft white for main background
+  static const Color textLight =
+      Color(0xFF030A16); // Dark blue-black for main text
+
+  static const Color mainBlue =
+      Color(0xFF048219); // Deep green for primary elements
 }

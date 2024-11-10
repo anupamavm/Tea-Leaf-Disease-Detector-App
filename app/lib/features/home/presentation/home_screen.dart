@@ -24,16 +24,21 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               child: const Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(
-                    'Hello, User!',
-                    style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+                    'Dr.TeaLeaf',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.bold,
+                        color: AppPallete.blackColor),
                   ),
                 ],
               ),
             ),
-            const SizedBox(height: 16),
+            const SizedBox(height: 20),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
@@ -42,7 +47,7 @@ class HomeScreen extends StatelessWidget {
                   const Text(
                     "About Diseases",
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize: 25,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -53,7 +58,7 @@ class HomeScreen extends StatelessWidget {
                     child: const Text(
                       "See All",
                       style: TextStyle(
-                        fontSize: 16,
+                        fontSize: 20,
                         color: AppPallete.mainGreen,
                       ),
                     ),
@@ -61,6 +66,7 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
+            const SizedBox(height: 10),
             SizedBox(
               height: 250,
               child: ListView.builder(
@@ -82,62 +88,96 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 16),
-            // Add Scan Button
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: SizedBox(
                 width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 40.0),
-                    backgroundColor: AppPallete.mainGreen,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                  ),
-                  onPressed: () {
-                    context.go('/scan'); // Navigate to the scan page
-                  },
-                  child: const Text(
-                    "Scan Tea Leaves",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: AppPallete.whiteColor,
-                      fontWeight: FontWeight.bold,
-                    ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(
+                      15.0), // Apply rounded corners to the whole stack
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      // Background image
+                      Positioned.fill(
+                        child: Image.asset(
+                          'assets/images/scan.jpg', // Replace with your image path
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      // Elevated button with transparent background
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 40.0),
+                          backgroundColor: Colors
+                              .transparent, // Transparent to show the image
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                        ),
+                        onPressed: () {
+                          context.go('/scan'); // Navigate to the scan page
+                        },
+                        child: const Text(
+                          "Scan For Diseases",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: AppPallete.whiteColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
-
             const SizedBox(height: 16),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: SizedBox(
                 width: double.infinity,
-                child: ElevatedButton(
-                  style: ElevatedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(vertical: 40.0),
-                    backgroundColor: AppPallete.mainGreen,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15.0),
-                    ),
-                  ),
-                  onPressed: () {
-                    context.go('/map'); // Navigate to the scan page
-                  },
-                  child: const Text(
-                    "Map",
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: AppPallete.whiteColor,
-                      fontWeight: FontWeight.bold,
-                    ),
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(
+                      15.0), // Apply rounded corners to the whole stack
+                  child: Stack(
+                    alignment: Alignment.center,
+                    children: [
+                      // Background image
+                      Positioned.fill(
+                        child: Image.asset(
+                          'assets/images/user.jpg', // Replace with your image path
+                          fit: BoxFit.cover,
+                        ),
+                      ),
+                      // Elevated button with transparent background
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.symmetric(vertical: 40.0),
+                          backgroundColor: Colors
+                              .transparent, // Transparent to show the image
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(15.0),
+                          ),
+                        ),
+                        onPressed: () {
+                          context
+                              .go('/user_guide'); // Navigate to the scan page
+                        },
+                        child: const Text(
+                          "User Guide",
+                          style: TextStyle(
+                            fontSize: 20,
+                            color: AppPallete.whiteColor,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
-
             const SizedBox(height: 16),
           ],
         ),

@@ -12,8 +12,8 @@ class DiseaseCard extends StatelessWidget {
     required this.title,
     required this.tagline,
     required this.imageUrl,
-    this.height = 200, // Default height if not specified
-    this.width = 150, // Default width if not specified
+    this.height = 150,
+    this.width = 150,
   });
 
   @override
@@ -21,8 +21,8 @@ class DiseaseCard extends StatelessWidget {
     return Card(
       margin: const EdgeInsets.all(8),
       child: Container(
-        height: height, // Set the height here
-        width: width, // Set the width here
+        height: height,
+        width: width,
         padding: const EdgeInsets.all(8),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -31,8 +31,8 @@ class DiseaseCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(8.0),
               child: Image.network(
                 imageUrl,
-                height: 150, // Adjust height based on card height
-                width: 150, // Adjust width based on card width and padding
+                height: 150,
+                width: 150,
                 fit: BoxFit.cover,
               ),
             ),
@@ -40,7 +40,7 @@ class DiseaseCard extends StatelessWidget {
             Text(
               title,
               style: const TextStyle(
-                fontSize: 18,
+                fontSize: 20,
                 fontWeight: FontWeight.bold,
               ),
               maxLines: 1,
@@ -52,6 +52,9 @@ class DiseaseCard extends StatelessWidget {
                 tagline,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  fontSize: 16,
+                ),
               ),
             ),
           ],
