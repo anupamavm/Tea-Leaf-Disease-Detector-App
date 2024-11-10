@@ -66,7 +66,7 @@ Future<void> scanImage(
             MaterialPageRoute(
               builder: (context) => ResultsPage(
                 result: result,
-                confidence: confidence,
+                confidence: confidence * 100,
               ),
             ),
           );
