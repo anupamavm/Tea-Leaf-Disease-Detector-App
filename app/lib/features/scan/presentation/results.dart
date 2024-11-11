@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:go_router/go_router.dart';
 
 class ResultsPage extends StatelessWidget {
   final String result;
   final double confidence;
 
-  ResultsPage({required this.result, required this.confidence});
+  const ResultsPage({Key? key, required this.result, required this.confidence})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,13 @@ class ResultsPage extends StatelessWidget {
                   Navigator.pop(context); // Navigate back
                 },
                 child: Text("Back"),
+              ),
+              SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () {
+                  context.go('/all_diseases'); // Navigate to All Diseases page
+                },
+                child: Text("View All Diseases"),
               ),
             ],
           ),

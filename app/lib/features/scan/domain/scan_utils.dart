@@ -1,7 +1,7 @@
-import 'package:Drtealeaf/features/scan/presentation/results.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_tflite/flutter_tflite.dart';
 import 'package:camera/camera.dart';
+import 'package:go_router/go_router.dart';
 import 'package:http/http.dart' as http;
 import 'connectivity_utils.dart'; // Import connectivity utilities
 import 'dart:convert';
@@ -61,15 +61,12 @@ Future<void> scanImage(
         if (predictions != null && predictions.isNotEmpty) {
           String result = predictions[0]['label'];
           double confidence = predictions[0]['confidence'];
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ResultsPage(
-                result: result,
-                confidence: confidence * 100,
-              ),
-            ),
-          );
+
+          // Use context.go() to navigate to ResultsPage
+          context.go('/results', extra: {
+            'result': result,
+            'confidence': confidence * 100, // convert to percentage
+          });
         } else {
           debugPrint("No predictions found from TFLite model.");
         }
@@ -77,16 +74,12 @@ Future<void> scanImage(
         // Send image to server and get response
         var serverResponse = await sendDataToServer(capturedImage, location);
         if (serverResponse != null) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => ResultsPage(
-                result: serverResponse['disease'],
-                confidence: serverResponse['score'] *
-                    100, // convert to percentage if needed
-              ),
-            ),
-          );
+          // Use context.go() to navigate to ResultsPage
+          context.go('/results', extra: {
+            'result': serverResponse['disease'],
+            'confidence':
+                serverResponse['score'] * 100, // convert to percentage
+          });
         }
       }
     } else {

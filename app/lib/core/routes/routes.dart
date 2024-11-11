@@ -6,7 +6,10 @@ import 'package:Drtealeaf/features/home/presentation/home_screen.dart';
 import 'package:Drtealeaf/features/info/presentation/all_diseases_screen.dart';
 import 'package:Drtealeaf/features/map/presentation/history.dart';
 import 'package:Drtealeaf/features/map/presentation/map_screen.dart';
+import 'package:Drtealeaf/features/scan/presentation/results.dart';
+
 import 'package:Drtealeaf/features/scan/presentation/scan_screen.dart';
+
 import 'package:Drtealeaf/features/settings/presentation/settings_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
@@ -79,6 +82,25 @@ final GoRouter router = GoRouter(
                 state.extra as Disease; // Get the disease from extra
             return NoTransitionPage(
                 child: DiseaseDetailScreen(disease: disease));
+          },
+        ),
+        GoRoute(
+          path: '/results',
+          pageBuilder: (context, state) {
+            // Retrieve data from `state.extra`, handling nulls safely
+            final resultData = state.extra as Map<String, dynamic>? ?? {};
+            final String result =
+                resultData['result'] as String? ?? 'No result available';
+            final double confidence =
+                resultData['confidence'] as double? ?? 0.0;
+
+            // Return a NoTransitionPage with the ResultsPage as its child
+            return NoTransitionPage(
+              child: ResultsPage(
+                result: result,
+                confidence: confidence,
+              ),
+            );
           },
         ),
       ],
