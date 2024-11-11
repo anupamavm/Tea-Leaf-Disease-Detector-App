@@ -146,7 +146,7 @@ class HomeScreen extends StatelessWidget {
                       // Background image
                       Positioned.fill(
                         child: Image.asset(
-                          'assets/images/user.jpg', // Replace with your image path
+                          'assets/images/user.png', // Replace with your image path
                           fit: BoxFit.cover,
                         ),
                       ),

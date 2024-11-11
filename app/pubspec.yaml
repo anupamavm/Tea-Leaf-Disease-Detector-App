@@ -87,9 +87,9 @@ flutter:
     - assets/labels.txt
     - assets/model_unquant.tflite
     - assets/logo.png
-    - assets/images/user.jpg
+    - assets/images/user.png
     - assets/images/scan.jpg
-    - assets/images/man.png
+
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
