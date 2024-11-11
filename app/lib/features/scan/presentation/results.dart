@@ -32,7 +32,7 @@ class ResultsPage extends StatelessWidget {
               SizedBox(height: 40),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.pop(context); // Navigate back
+                  context.go('/scan'); // Navigate back
                 },
                 child: Text("Back"),
               ),

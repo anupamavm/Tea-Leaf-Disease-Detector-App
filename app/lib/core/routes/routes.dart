@@ -115,49 +115,51 @@ class ScaffoldWithNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: child,
-      bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: AppPallete.mainGreen,
-        currentIndex: _calculateSelectedIndex(context),
-        onTap: (index) {
-          switch (index) {
-            case 0:
-              context.go('/');
-              break;
-            case 1:
-              context.go('/scan');
-              break;
-            case 2:
-              context.go('/map');
-              break;
-            case 3:
-              context.go('/settings');
-              break;
-          }
-        },
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-            backgroundColor: AppPallete.mainGreen,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.scanner),
-            label: 'Scan',
-            backgroundColor: AppPallete.mainGreen,
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.map),
-            label: 'Map',
-            backgroundColor: AppPallete.mainGreen,
-          ),
-          // BottomNavigationBarItem(
-          //   icon: Icon(Icons.settings),
-          //   label: 'Settings',
-          //   backgroundColor: AppPallete.mainGreen,
-          // ),
-        ],
+    return SafeArea(
+      child: Scaffold(
+        body: child,
+        bottomNavigationBar: BottomNavigationBar(
+          backgroundColor: AppPallete.mainGreen,
+          currentIndex: _calculateSelectedIndex(context),
+          onTap: (index) {
+            switch (index) {
+              case 0:
+                context.go('/');
+                break;
+              case 1:
+                context.go('/scan');
+                break;
+              case 2:
+                context.go('/map');
+                break;
+              case 3:
+                context.go('/settings');
+                break;
+            }
+          },
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home),
+              label: 'Home',
+              backgroundColor: AppPallete.mainGreen,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.scanner),
+              label: 'Scan',
+              backgroundColor: AppPallete.mainGreen,
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.map),
+              label: 'Map',
+              backgroundColor: AppPallete.mainGreen,
+            ),
+            // BottomNavigationBarItem(
+            //   icon: Icon(Icons.settings),
+            //   label: 'Settings',
+            //   backgroundColor: AppPallete.mainGreen,
+            // ),
+          ],
+        ),
       ),
     );
   }
