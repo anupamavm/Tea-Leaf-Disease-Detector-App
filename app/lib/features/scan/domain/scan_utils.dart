@@ -57,6 +57,23 @@ Future<void> scanImage(
       bool isConnected = await hasInternetConnection();
 
       if (!isConnected) {
+        // Show a dialog to inform the user about offline mode
+        showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text("Offline Mode"),
+            content: const Text(
+                "No internet connection detected. Using the locally hosted model for analysis."),
+            actions: [
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Text("OK"),
+              ),
+            ],
+          ),
+        );
         var predictions = await runTFLiteModel(capturedImage);
         if (predictions != null && predictions.isNotEmpty) {
           String result = predictions[0]['label'];

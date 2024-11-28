@@ -31,9 +31,6 @@ Welcome to the *Tea Leaf Disease Detection App*! Follow these steps to make the 
 ### Identifying Tea Leaf Diseases
 1. To identify tea leaf diseases, tap the *Scan* icon on the bottom app bar or press the *Scan Disease* button.
 2. [Go to Scan Screen](go://scan)
-
-![Scan Screen Page](lib/assets/abcd.png)
-
 3. Place the diseased leaf on a *white background* and capture entire leaf.
 
 #### Tips for Best Results
@@ -45,9 +42,6 @@ Welcome to the *Tea Leaf Disease Detection App*! Follow these steps to make the 
 ### Disease Distribution
 - If you're in *online mode*, the diseased distribution profile is plotted on Google Maps.
 - [Go to Diseased Distribution Profile Page](go://map)
-
-![Map Page](lib/assets/abcd.png)
-
 - In *offline mode*, the app shows the identified disease along with recommended solutions.
 
 ### For more details
